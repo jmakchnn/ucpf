@@ -131,11 +131,10 @@ jobs:
           mv -f temp_extract/* . 2>/dev/null || true
           shopt -u dotglob
           
-          # 清理临时目录和原始ZIP文件
+          # 只清理临时目录，保留原始ZIP文件
           rm -rf temp_extract
-          rm -f "$FILE_NAME"
           
-          echo "ZIP文件解压完成，所有文件已移动到根目录"
+          echo "ZIP文件解压完成，所有文件已移动到根目录，原始压缩包已保留"
       
       - name: 更新版本记录
         if: steps.check_version.outputs.need_update == 'true'
@@ -179,7 +178,7 @@ jobs:
             echo "- 状态: ✅ 已更新到新版本" >> $GITHUB_STEP_SUMMARY
             echo "- 下载文件: ${{ steps.get_latest.outputs.file_name }}" >> $GITHUB_STEP_SUMMARY
             if [ "${{ steps.download.outputs.is_zip }}" = "true" ]; then
-              echo "- 处理方式: ZIP文件已解压到根目录" >> $GITHUB_STEP_SUMMARY
+              echo "- 处理方式: ZIP文件已解压到根目录，原始压缩包已保留" >> $GITHUB_STEP_SUMMARY
             else
               echo "- 处理方式: 文件已保存到根目录" >> $GITHUB_STEP_SUMMARY
             fi
